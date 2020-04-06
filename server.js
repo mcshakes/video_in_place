@@ -34,7 +34,7 @@ app.get('/api/greeting', (req, res) => {
     res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
-app.get("/generate-token", (req, res) => {
+app.get("/video/generate-token", (req, res) => {
 
     const accessToken = new AccessToken(
         process.env.ACCOUNT_SID,
