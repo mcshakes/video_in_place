@@ -20,7 +20,8 @@ class VideoManager extends React.Component {
             previewTracks: null,
             localMediaAvailable: false,
             hasJoinedRoom: false,
-            activeRoom: null
+            activeRoom: null,
+            roomSelection: false
         }
     }
 
@@ -31,17 +32,37 @@ class VideoManager extends React.Component {
     //     })
     // }
 
+    selectRoom = (e) => {
+        this.setState(prevState => {
+            return { roomSelection: !prevState.roomSelection };
+        })
+        console.log(this.state.roomSelection)
+    }
+
     render() {
+        let renderLinks;
+
+        if (!this.state.roomSelection) {
+            renderLinks = (
+                <>
+                    <Link to="/join" className="button is-primary" onClick={this.selectRoom}>Join a Room</Link>
+                    <Link to="/create" className="button is-link" onClick={this.selectRoom}>Create a Room</Link>
+                </>
+            )
+        } else {
+            renderLinks = <button className="button is-link" onClick={this.selectRoom}>Back to Manager</button>
+        }
 
         return (
             <Router>
                 <section className="video-manager" >
-                    <Link to="/join" className="button is-primary">Join a Room</Link>
-                    <Link to="/create" className="button is-link">Create a Room</Link>
+                    {renderLinks}
+                    <div className="current-room">
+                        <Route path="/create" component={createMeetingRoom} />
+                        <Route path="/join" component={joinMeetingRoom} />
+                    </div>
                 </section >
 
-                <Route path="/create" component={createMeetingRoom} />
-                <Route path="/join" component={joinMeetingRoom} />
             </Router>
         )
 
