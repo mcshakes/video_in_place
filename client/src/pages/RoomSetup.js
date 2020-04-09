@@ -5,10 +5,10 @@ const RoomSetup = ({
     handleUserNameChange,
     roomName,
     handleRoomNameChange,
-    submitIdentityAndRoom
+    handleSubmit
 }) => {
     return (
-        <form onSubmit={submitIdentityAndRoom}>
+        <form onSubmit={handleSubmit}>
             <h2>Join Room</h2>
             <div>
                 <label htmlFor="name">Name:</label>

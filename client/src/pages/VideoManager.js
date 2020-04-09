@@ -2,14 +2,7 @@ import React, { useState, useCallback } from 'react';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
 
-import joinMeetingRoom from "./JoinRoom.js"
-import createMeetingRoom from "./CreateRoom.js"
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import RoomSetup from "./RoomSetup.js"
 
 const VideoManager = () => {
     const [username, setUserName] = useState("");
@@ -37,8 +30,15 @@ const VideoManager = () => {
             }
         }
 
-        const data = await axios.post("/api/generate-token", config)
-    })
+        try {
+            const data = await axios.post("/api/generate-token", config)
+            console.log("SOME DATA", data)
+            setToken(data.data.token)
+        } catch (error) {
+            console.log(`Error Generating Token: ${error.response.body}`);
+        }
+
+    }, [username, roomName])
 
     // componentDidMount() {
     //     axios.get("/api/generate-token").then(results => {
@@ -47,12 +47,29 @@ const VideoManager = () => {
     //     })
     // }
 
+    let renderView;
 
-    return (
-        <div>
-            Video Chat as a functional Component
-        </div>
-    )
+    if (token) {
+        renderView = (
+            <div>
+                <p>Username: {username}</p>
+                <p>Room Name: {roomName}</p>
+                <p>Token: {token} </p>
+            </div>
+        )
+    } else {
+        renderView = (
+            <RoomSetup
+                username={username}
+                roomName={roomName}
+                handleUserNameChange={handleUserNameChange}
+                handleRoomNameChange={handleRoomNameChange}
+                handleSubmit={submitIdentityAndRoom}
+            />
+        );
+    }
+
+    return renderView;
 
 
 }
