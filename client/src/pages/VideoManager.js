@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
+
 import joinMeetingRoom from "./JoinRoom.js"
 import createMeetingRoom from "./CreateRoom.js"
 import {
@@ -10,20 +11,34 @@ import {
     Link
 } from "react-router-dom";
 
-class VideoManager extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            identity: null,
-            roomName: "",
-            roomError: false,
-            previewTracks: null,
-            localMediaAvailable: false,
-            hasJoinedRoom: false,
-            activeRoom: null,
-            roomSelection: false
+const VideoManager = () => {
+    const [username, setUserName] = useState("");
+    const [roomName, setRoomName] = useState("");
+    const [token, setToken] = useState("");
+
+    const handleUserNameChange = useCallback(event => {
+        setUserName(event.target.value);
+    });
+
+    const handleRoomNameChange = useCallback(event => {
+        setRoomName(event.target.value);
+    })
+
+    const submitIdentityAndRoom = useCallback(async event => {
+        event.preventDefault();
+
+        let config = {
+            body: JSON.stringify({
+                identity: username,
+                room: roomName
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }
-    }
+
+        const data = await axios.post("/api/generate-token", config)
+    })
 
     // componentDidMount() {
     //     axios.get("/api/generate-token").then(results => {
@@ -32,41 +47,13 @@ class VideoManager extends React.Component {
     //     })
     // }
 
-    selectRoom = (e) => {
-        this.setState(prevState => {
-            return { roomSelection: !prevState.roomSelection };
-        })
-        console.log(this.state.roomSelection)
-    }
 
-    render() {
-        let renderLinks;
+    return (
+        <div>
+            Video Chat as a functional Component
+        </div>
+    )
 
-        if (!this.state.roomSelection) {
-            renderLinks = (
-                <>
-                    <Link to="/join" className="button is-primary" onClick={this.selectRoom}>Join a Room</Link>
-                    <Link to="/create" className="button is-link" onClick={this.selectRoom}>Create a Room</Link>
-                </>
-            )
-        } else {
-            renderLinks = <button className="button is-link" onClick={this.selectRoom}>Back to Manager</button>
-        }
-
-        return (
-            <Router>
-                <section className="video-manager" >
-                    {renderLinks}
-                    <div className="current-room">
-                        <Route path="/create" component={createMeetingRoom} />
-                        <Route path="/join" component={joinMeetingRoom} />
-                    </div>
-                </section >
-
-            </Router>
-        )
-
-    }
 
 }
 

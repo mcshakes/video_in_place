@@ -34,32 +34,34 @@ app.get('/api/greeting', (req, res) => {
     res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
-app.get("/api/generate-token", (req, res) => {
+app.post("/api/generate-token", (req, res) => {
     const testUser = 'example-user';
 
-    const accessToken = new AccessToken(
-        process.env.ACCOUNT_SID,
-        process.env.TWILIO_API_SID,
-        process.env.TWILIO_API_SECRET
-    );
+    console.log("BODY", req.body)
 
-    // Set the Identity of this token
-    accessToken.identity = testUser;
+    // const accessToken = new AccessToken(
+    //     process.env.ACCOUNT_SID,
+    //     process.env.TWILIO_API_SID,
+    //     process.env.TWILIO_API_SECRET
+    // );
 
-    // Grant access to Video
-    const grant = new VideoGrant();
-    grant.room = 'cool room';
-    accessToken.addGrant(grant);
+    // // Set the Identity of this token
+    // accessToken.identity = testUser;
 
-    // Serialize the token as a JWT
-    const jwt = accessToken.toJwt();
+    // // Grant access to Video
+    // const grant = new VideoGrant();
+    // grant.room = 'cool room';
+    // accessToken.addGrant(grant);
 
-    console.log("What's here?", res)
+    // // Serialize the token as a JWT
+    // const jwt = accessToken.toJwt();
 
-    res.send({
-        identity: testUser,
-        token: jwt
-    });
+    // console.log("What's here?", res)
+
+    // res.send({
+    //     identity: testUser,
+    //     token: jwt
+    // });
 })
 
 // createLocalVideoTrack({ name: 'camera' }).then(function (localTrack) {

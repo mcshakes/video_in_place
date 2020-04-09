@@ -1,13 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import VideoManager from './pages/VideoManager';
+import TwilioVideo from 'twilio-video';
+import axios from 'axios';
 import './App.sass';
+import { TwilioVideoProvider, TwilioVideoConsumer } from "./TwilioContext";
 
 class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
@@ -15,7 +14,12 @@ class App extends React.Component {
         <header className="App-header">
           <h1>Welcome To Streamer</h1>
         </header>
-        <VideoManager />
+        <main>
+          <VideoManager data={this.state} />
+        </main>
+
+
+
       </div>
     );
   }
