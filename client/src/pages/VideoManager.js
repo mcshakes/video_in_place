@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
+import Room from './Room';
 
 import RoomSetup from "./RoomSetup.js"
 
@@ -21,10 +22,10 @@ const VideoManager = () => {
         event.preventDefault();
 
         let config = {
-            body: JSON.stringify({
+            body: {
                 identity: username,
                 room: roomName
-            }),
+            },
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -35,7 +36,7 @@ const VideoManager = () => {
             console.log("SOME DATA", data)
             setToken(data.data.token)
         } catch (error) {
-            console.log(`Error Generating Token: ${error.response.body}`);
+            console.log(`Generating Token FAILED: ${error}`);
         }
 
     }, [username, roomName])
@@ -51,11 +52,7 @@ const VideoManager = () => {
 
     if (token) {
         renderView = (
-            <div>
-                <p>Username: {username}</p>
-                <p>Room Name: {roomName}</p>
-                <p>Token: {token} </p>
-            </div>
+            <Room roomName={roomName} token={token} />
         )
     } else {
         renderView = (

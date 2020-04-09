@@ -35,6 +35,8 @@ app.get('/api/greeting', (req, res) => {
 });
 
 app.post("/api/generate-token", (req, res) => {
+    let userIdentity = req.body.body.identity;
+    let room = req.body.body.room;
 
     const accessToken = new AccessToken(
         process.env.ACCOUNT_SID,
@@ -43,18 +45,16 @@ app.post("/api/generate-token", (req, res) => {
     );
 
     // Set the Identity of this token
-    accessToken.identity = req.body.identity;
+    accessToken.identity = userIdentity
 
     // Grant access to Video
     const grant = new VideoGrant();
-    grant.room = req.body.room;
+    grant.room = room;
+
     accessToken.addGrant(grant);
 
     // Serialize the token as a JWT
     const jwt = accessToken.toJwt();
-
-    let room = req.body.room;
-    let userIdentity = req.body.identity;
 
     res.send({
         identity: userIdentity,
