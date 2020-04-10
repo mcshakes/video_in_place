@@ -1,38 +1,25 @@
 import React from 'react';
 import logo from './logo.svg';
-import VideoComponent from './Video';
-import './App.css';
+import VideoManager from './pages/VideoManager';
+import TwilioVideo from 'twilio-video';
+import axios from 'axios';
+import './App.sass';
+import { TwilioVideoProvider, TwilioVideoConsumer } from "./TwilioContext";
 
 class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      greeting: ''
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({ name: event.target.value });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    fetch(`/api/greeting?name=${encodeURIComponent(this.state.name)}`)
-      .then(response => response.json())
-      .then(state => this.setState(state));
-  }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <h1>Welcome To Streamer</h1>
         </header>
-        <VideoComponent />
+        <main>
+          <VideoManager data={this.state} />
+        </main>
+
+
+
       </div>
     );
   }
