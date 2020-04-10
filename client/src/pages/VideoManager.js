@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
-import Room from './Room';
+import Room from '../components/Room';
 
 import RoomSetup from "./RoomSetup.js"
 
@@ -40,13 +40,6 @@ const VideoManager = () => {
         }
 
     }, [username, roomName])
-
-    // componentDidMount() {
-    //     axios.get("/api/generate-token").then(results => {
-    //         const { identity, token } = results.data;
-    //         this.setState({ identity, token });
-    //     })
-    // }
 
     let renderView;
 
