@@ -52,10 +52,20 @@ const Participant = ({ participant }) => {
     }, [videoTracks]);
 
     return (
-        <div className="participant">
-            <h3>{participant.identity}</h3>
-            <video ref={videoRef} autoPlay={true} />
+        <div className="card participant">
+
+            <div className="card-image">
+                <video className="image is-500x500" ref={videoRef} autoPlay={true} />
+            </div>
             <audio ref={audioRef} autoPlay={true} muted={true} />
+            <div className="card-content">
+                <div className="media">
+
+                </div>
+                <div className="media-content">
+                    <h3 className="title is-4">{participant.identity}</h3>
+                </div>
+            </div>
         </div>
     );
 };

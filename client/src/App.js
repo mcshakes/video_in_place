@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import VideoManager from './pages/VideoManager';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
-import './App.sass';
+import './sass/MyStyles.scss';
 import { TwilioVideoProvider, TwilioVideoConsumer } from "./TwilioContext";
 
 class App extends React.Component {

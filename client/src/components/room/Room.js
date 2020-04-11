@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Video from 'twilio-video';
-import Participant from './Participant';
+import Participant from '../participant/Participant';
 
 
 const Room = ({ roomName, token }) => {
@@ -52,21 +52,26 @@ const Room = ({ roomName, token }) => {
     }, [roomName, token]);
 
     return (
-        < div className="room" >
-            <h2>Room: {roomName}</h2>
-            <button>Leave Room</button>
-            <div className="local-participant">
-                {room ? (
-                    <Participant
-                        key={room.localParticipant.sid}
-                        participant={room.localParticipant}
-                    />
-                ) : (
-                        ''
-                    )}
+        < div className="room is-flex" >
+            <div className="room-info">
+                <h2>Room: {roomName}</h2>
+                <button>Leave Room</button>
             </div>
-            <h3>Remote Participants</h3>
-            <div className="remote-participants">{remoteParticipants}</div>
+
+            <div className="participants">
+                <div className="local-participant">
+                    {room ? (
+                        <Participant
+                            key={room.localParticipant.sid}
+                            participant={room.localParticipant}
+                        />
+                    ) : (
+                            ''
+                        )}
+                </div>
+                <h3>Remote Participants</h3>
+                <div className="remote-participants">{remoteParticipants}</div>
+            </div>
         </div >
     );
 };

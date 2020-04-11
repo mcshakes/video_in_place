@@ -10,29 +10,35 @@ const RoomSetup = ({
     return (
         <form onSubmit={handleSubmit}>
             <h2>Join Room</h2>
-            <div>
-                <label htmlFor="name">Name:</label>
-                <input
-                    type="text"
-                    id="user-name"
-                    value={userName}
-                    onChange={handleUserNameChange}
-                    required
-                />
+            <div className="field">
+                <div className="control">
+                    <label htmlFor="name">Name:</label>
+                    <input
+                        type="text"
+                        id="user-name"
+                        value={userName}
+                        onChange={handleUserNameChange}
+                        required
+                    />
+                </div>
             </div>
 
-            <div>
-                <label htmlFor="name">Room Name:</label>
-                <input
-                    type="text"
-                    id="user-name"
-                    value={roomName}
-                    onChange={handleRoomNameChange}
-                    required
-                />
-            </div>
 
-            <button type="submit" className="button submit">Enter Room</button>
+            <div className="field">
+                <div className="control">
+                    <label htmlFor="name">Room Name:</label>
+                    <input
+                        type="text"
+                        id="user-name"
+                        value={roomName}
+                        onChange={handleRoomNameChange}
+                        required
+                    />
+                </div>
+            </div >
+
+
+            <button type="submit" className="button is-primary">Enter Room</button>
         </form>
     )
 }
