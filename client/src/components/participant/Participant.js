@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './Participant.scss';
 
 const Participant = ({ participant }) => {
     const [videoTracks, setVideoTracks] = useState([]);
@@ -7,9 +8,15 @@ const Participant = ({ participant }) => {
     const videoRef = useRef();
     const audioRef = useRef();
 
-    const trackpubsToTracks = trackMap => Array.from(trackMap.values())
-        .map(publication => publication.track)
-        .filter(track => track !== null);
+    const trackPubsToTracks = trackMap => {
+        // new Arrays of LocalVideoTrackPublication
+
+        let newTrackArr = Array.from(trackMap.values())
+
+        let existingLocalTrack = newTrackArr.map(publication => publication.track).filter(track => track !== null);
+
+        return existingLocalTrack
+    }
 
     useEffect(() => {
         const trackSubscribed = track => {
@@ -28,8 +35,8 @@ const Participant = ({ participant }) => {
             }
         };
 
-        setVideoTracks(trackpubsToTracks(participant.videoTracks));
-        setAudioTracks(trackpubsToTracks(participant.audioTracks));
+        setVideoTracks(trackPubsToTracks(participant.videoTracks));
+        setAudioTracks(trackPubsToTracks(participant.audioTracks));
 
         participant.on('trackSubscribed', trackSubscribed);
         participant.on('trackUnsubscribed', trackUnsubscribed);
@@ -52,10 +59,19 @@ const Participant = ({ participant }) => {
     }, [videoTracks]);
 
     return (
-        <div className="participant">
-            <h3>{participant.identity}</h3>
-            <video ref={videoRef} autoPlay={true} />
+        <div className="card participant">
+            <div className="video-container">
+                <video className="image is-500x500" ref={videoRef} autoPlay={true} />
+            </div>
             <audio ref={audioRef} autoPlay={true} muted={true} />
+            <div className="card-content">
+                <div className="media">
+
+                </div>
+                <div className="media-content">
+                    <h3 className="title is-4">{participant.identity}</h3>
+                </div>
+            </div>
         </div>
     );
 };

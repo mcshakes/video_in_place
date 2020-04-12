@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
-import Room from '../components/Room';
+import Room from '../components/room/Room';
 
 import RoomSetup from "./RoomSetup.js"
 
