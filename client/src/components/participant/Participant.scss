@@ -1,0 +1,18 @@
+$pale-turquoise: #BCF8EC;
+$light-blue: #AED9E0;
+$blue-bell: #9FA0C3;
+$antique-fuchsia: #8B687F;
+$deep-ruby: #7B435B;
+
+.participant {
+    background: $light-blue;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.video-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 6px;
+}

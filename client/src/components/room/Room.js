@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Video from 'twilio-video';
 import Participant from '../participant/Participant';
-
+import './Room.scss';
 
 const Room = ({ roomName, token }) => {
     const [room, setRoom] = useState(null);
@@ -54,8 +54,8 @@ const Room = ({ roomName, token }) => {
     return (
         < div className="room is-flex" >
             <div className="room-info">
-                <h2>Room: {roomName}</h2>
-                <button>Leave Room</button>
+                <h2>Room Name: {roomName}</h2>
+                <button className="button">Leave Room</button>
             </div>
 
             <div className="participants">
