@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import VideoManager from './pages/VideoManager';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
