@@ -61,7 +61,7 @@ const Participant = ({ participant }) => {
     return (
         <div className="card participant">
             <div className="video-container">
-                <video className="image is-500x500" ref={videoRef} autoPlay={true} />
+                <video id="video" className="image is-500x500" ref={videoRef} autoPlay={true} />
             </div>
             <audio ref={audioRef} autoPlay={true} muted={true} />
             <div className="card-content">
