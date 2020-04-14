@@ -34,6 +34,8 @@ app.get('/api/greeting', (req, res) => {
     res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
+let roomObject;
+
 app.post("/api/generate-token", (req, res) => {
     let userIdentity = req.body.body.identity;
     let room = req.body.body.room;
@@ -49,7 +51,9 @@ app.post("/api/generate-token", (req, res) => {
 
     // Grant access to Video
     const grant = new VideoGrant();
+    console.log("BEFOIRE GRANT =>", grant)
     grant.room = room;
+    console.log("AFTER GRANT =>", grant)
 
     accessToken.addGrant(grant);
 
@@ -63,31 +67,26 @@ app.post("/api/generate-token", (req, res) => {
     });
 })
 
-// createLocalVideoTrack({ name: 'camera' }).then(function (localTrack) {
-//     console.log(localTrack.name); // 'camera'
-// });
+app.post("/api/email-invite", (req, res) => {
+    console.log("")
+    console.log("")
 
-// createLocalTracks({
-//     audio: true,
-//     video: { width: 640 }
-// }).then(localTracks => {
-//     return connect(accessToken, {
-//         name: "DailyStandup",
-//         tracks: localTracks
-//     });
-// }).then(room => {
-//     console.log(`Connected to Room: ${room.name}`);
-// });
+    console.log("HIT THAT API")
 
-// const roomConfigs = { name: "DailyStandup", tracks: [] }
+    // room: {
+    //     state: 'connected',
+    //     sid: 'RM021a83946e3e1fe7925c53b288347956',
+    //     participants: {},
+    //     name: 'a',
+    //     localParticipant: [Object],
+    //     isRecording: false,
+    //     dominantSpeaker: null
+    //   }
+    let emailObj = req.body.body.emails
+    let emails = emailObj[emailObj.length - 1]
+    let roomInfo = req.body.body.room
 
-// connect(accessToken, roomConfigs).then(room => {
-//     console.log("`Successfully joined a room ${room}");
+    console.log(emails)
+    console.log(roomInfo)
+})
 
-//     room.on("participantConnected", participant => {
-//         console.log(`A remote Participant connected ${participant}`);
-//     });
-
-// }, error => {
-//     console.error(`Unable to connect to Room: ${error.message}`)
-// })
