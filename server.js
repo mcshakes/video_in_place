@@ -3,7 +3,7 @@ const { connect, createLocalTracks, createLocalVideoTrack } = require("twilio-vi
 const express = require("express");
 const pino = require('pino');
 const expressPino = require('express-pino-logger');
-
+const sgMail = require('@sendgrid/mail');
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 const expressLogger = expressPino({ logger });
 
@@ -34,6 +34,8 @@ app.get('/api/greeting', (req, res) => {
     res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
+let roomObject;
+
 app.post("/api/generate-token", (req, res) => {
     let userIdentity = req.body.body.identity;
     let room = req.body.body.room;
@@ -49,7 +51,9 @@ app.post("/api/generate-token", (req, res) => {
 
     // Grant access to Video
     const grant = new VideoGrant();
+    console.log("BEFOIRE GRANT =>", grant)
     grant.room = room;
+    console.log("AFTER GRANT =>", grant)
 
     accessToken.addGrant(grant);
 
@@ -63,31 +67,47 @@ app.post("/api/generate-token", (req, res) => {
     });
 })
 
-// createLocalVideoTrack({ name: 'camera' }).then(function (localTrack) {
-//     console.log(localTrack.name); // 'camera'
-// });
+app.post("/api/email-invite", async (req, res) => {
+    console.log("")
+    console.log("")
 
-// createLocalTracks({
-//     audio: true,
-//     video: { width: 640 }
-// }).then(localTracks => {
-//     return connect(accessToken, {
-//         name: "DailyStandup",
-//         tracks: localTracks
-//     });
-// }).then(room => {
-//     console.log(`Connected to Room: ${room.name}`);
-// });
+    console.log("HIT THAT API")
 
-// const roomConfigs = { name: "DailyStandup", tracks: [] }
+    // room: {
+    //     state: 'connected',
+    //     sid: 'RM021a83946e3e1fe7925c53b288347956',
+    //     participants: {},
+    //     name: 'a',
+    //     localParticipant: [Object],
+    //     isRecording: false,
+    //     dominantSpeaker: null
+    //   }
 
-// connect(accessToken, roomConfigs).then(room => {
-//     console.log("`Successfully joined a room ${room}");
+    let emailObj = req.body.body.emails
+    let emails = emailObj[emailObj.length - 1].split(",")
+    let roomInfo = req.body.body.room
 
-//     room.on("participantConnected", participant => {
-//         console.log(`A remote Participant connected ${participant}`);
-//     });
 
-// }, error => {
-//     console.error(`Unable to connect to Room: ${error.message}`)
-// })
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    for (let i = 0; i < emails.length; i++) {
+
+        const msg = {
+            to: `${emails[i]}`,
+            from: 'the_devil@hell.org',
+            subject: "We're waiting for you",
+            text: `Yo! We are in room ${roomInfo.name}`,
+            html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+        };
+
+        try {
+            await sgMail.send(msg);
+        } catch (e) {
+            console.log("Sendgrid Email error => ", e)
+        }
+
+    }
+
+
+})
+
