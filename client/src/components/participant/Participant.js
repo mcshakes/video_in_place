@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Participant.scss';
+import { getFullFaceDescription } from '../../api/face';
+
 
 const Participant = ({ participant }) => {
     const [videoTracks, setVideoTracks] = useState([]);
@@ -12,7 +14,6 @@ const Participant = ({ participant }) => {
         // new Arrays of LocalVideoTrackPublication
 
         let newTrackArr = Array.from(trackMap.values())
-
         let existingLocalTrack = newTrackArr.map(publication => publication.track).filter(track => track !== null);
 
         return existingLocalTrack
@@ -48,10 +49,21 @@ const Participant = ({ participant }) => {
         };
     }, [participant]);
 
+    const getFaceData = async (video) => {
+        let thing = await getFullFaceDescription(video);
+        console.log(thing);
+    }
+
     useEffect(() => {
         const videoTrack = videoTracks[0];
+
         if (videoTrack) {
+            let video = document.getElementById('video')
+
+            getFaceData(video)
+
             videoTrack.attach(videoRef.current);
+
             return () => {
                 videoTrack.detach();
             };
@@ -59,7 +71,8 @@ const Participant = ({ participant }) => {
     }, [videoTracks]);
 
     return (
-        <div className="card participant">
+
+        < div className="card participant" >
             <div className="video-container">
                 <video id="video" className="image is-500x500" ref={videoRef} autoPlay={true} />
             </div>
@@ -72,7 +85,7 @@ const Participant = ({ participant }) => {
                     <h3 className="title is-4">{participant.identity}</h3>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

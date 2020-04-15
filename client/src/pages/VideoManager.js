@@ -1,14 +1,18 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import TwilioVideo from 'twilio-video';
 import axios from 'axios';
 import Room from '../components/room/Room';
-
+import { loadModels, getFullFaceDescription } from '../api/face';
 import RoomSetup from "./RoomSetup.js"
 
 const VideoManager = () => {
     const [username, setUserName] = useState("");
     const [roomName, setRoomName] = useState("");
     const [token, setToken] = useState("");
+
+    useEffect(() => {
+        loadModels();
+    }, []);
 
     const handleUserNameChange = useCallback(event => {
         setUserName(event.target.value);
@@ -33,7 +37,7 @@ const VideoManager = () => {
 
         try {
             const data = await axios.post("/api/generate-token", config)
-            console.log("SOME DATA", data)
+
             setToken(data.data.token)
         } catch (error) {
             console.log(`Generating Token FAILED: ${error}`);

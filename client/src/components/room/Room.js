@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Video from 'twilio-video';
 import Participant from '../participant/Participant';
+import EmailInvite from "../emailInvite/EmailInvite";
 import './Room.scss';
 
 const Room = ({ roomName, token }) => {
     const [room, setRoom] = useState(null);
     const [participants, setParticipants] = useState([]);
+    const [email, handleEmailChange] = useState([]);
 
     const remoteParticipants = participants.map(participant => (
         <Participant key={participant.sid} participant={participant} />
@@ -56,6 +58,8 @@ const Room = ({ roomName, token }) => {
             <div className="room-info">
                 <h2>Room Name: {roomName}</h2>
                 <button className="button">Leave Room</button>
+
+                <EmailInvite roomName={room} />
             </div>
 
             <div className="participants">
