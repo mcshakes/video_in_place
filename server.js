@@ -3,7 +3,7 @@ const { connect, createLocalTracks, createLocalVideoTrack } = require("twilio-vi
 const express = require("express");
 const pino = require('pino');
 const expressPino = require('express-pino-logger');
-
+const sgMail = require('@sendgrid/mail');
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 const expressLogger = expressPino({ logger });
 
@@ -67,7 +67,7 @@ app.post("/api/generate-token", (req, res) => {
     });
 })
 
-app.post("/api/email-invite", (req, res) => {
+app.post("/api/email-invite", async (req, res) => {
     console.log("")
     console.log("")
 
@@ -82,11 +82,32 @@ app.post("/api/email-invite", (req, res) => {
     //     isRecording: false,
     //     dominantSpeaker: null
     //   }
+
     let emailObj = req.body.body.emails
-    let emails = emailObj[emailObj.length - 1]
+    let emails = emailObj[emailObj.length - 1].split(",")
     let roomInfo = req.body.body.room
 
-    console.log(emails)
-    console.log(roomInfo)
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+    for (let i = 0; i < emails.length; i++) {
+
+        const msg = {
+            to: `${emails[i]}`,
+            from: 'the_devil@hell.org',
+            subject: "We're waiting for you",
+            text: `Yo! We are in room ${roomInfo.name}`,
+            html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+        };
+
+        try {
+            await sgMail.send(msg);
+        } catch (e) {
+            console.log("Sendgrid Email error => ", e)
+        }
+
+    }
+
+
 })
 
